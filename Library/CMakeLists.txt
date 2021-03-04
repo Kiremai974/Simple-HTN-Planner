@@ -4,6 +4,11 @@ cmake_minimum_required(VERSION 3.0)
 # Project Simple HTN Planner Library
 project (SimpleHTNPlannerLib)
 
+if(MSVC)
+    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+    set(BUILD_SHARED_LIBS TRUE)
+endif()
+
 set	(INCLUDE_FILES
 		Include/EnumAgent.h
 		Include/EnumBlock.h
