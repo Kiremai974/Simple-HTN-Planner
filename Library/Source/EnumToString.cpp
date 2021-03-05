@@ -3,6 +3,7 @@
 // The strings associated with the enums are generated here
 /////////////////////////////////////////////////////////////////////
 #define GENERATE_ENUM_STRINGS	// Start string generation
+#include <cstdint>					// Support for numeric enum value
 #include "EnumAgent.h"				// Application Domain: Travel 
 #include "EnumBlock.h"				// Application Domain: Blocksworld
 #include "EnumBlockStatus.h"		// Application Domain: Blocksworld

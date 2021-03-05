@@ -16,9 +16,13 @@ set	(INCLUDE_FILES
 		Include/EnumLocation.h
 		Include/EnumReturnedValue.h
 		Include/EnumToString.h
+		
+		Include/SimpleHTN/State.h
 	)
 set	(SOURCE_FILES
 		Source/EnumToString.cpp	
+		
+		Source/SimpleHTN/State.cpp
 	)
 
 add_library	(${PROJECT_NAME} SHARED

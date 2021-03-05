@@ -28,6 +28,8 @@
 #include "EnumBlockStatus.h"	// Application Domain: Blocksworld
 #include "EnumLocation.h"		// Application Domain: Travel
 #include "EnumReturnedValue.h"	// Visibility for None, False, and True
+
+#include "SimpleHTN/State.h"				// Domain independent state test
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -35,7 +37,7 @@ typedef std::string MethodId;
 typedef std::string OperatorId;
 typedef std::string TaskId;
 
-class State {
+/*class State {
 	private:
 		std::string name;
 
@@ -69,12 +71,12 @@ class State {
 			clear.clear();
 			Block holding = Block::none;
 		}
-};
+};*/
 
-State empty("Empty");
-typedef State Goal;
+SimpleHTN::State empty("Empty");
+typedef SimpleHTN::State Goal;
 
-struct Parameters {
+/*struct Parameters {
 	public:
 		// Travel
 		Agent a;
@@ -113,10 +115,12 @@ struct Parameters {
 				p += (", " + std::string(GetStringBlock(c)));
 			std::cout << p;
 		}
-};
+};*/
+
+typedef uint32_t Parameters; // pass Parameters as a generic ID of user defined data
 
 // Helpers
-bool is_done(Block b1, State& state, Goal& goal, Block done_state)
+bool is_done(Block b1, SimpleHTN::State& state, Goal& goal, Block done_state)
 {
 	if (b1 == done_state)
 		return true;
@@ -132,10 +136,12 @@ bool is_done(Block b1, State& state, Goal& goal, Block done_state)
 }
 
 // Declare Operators
-typedef std::pair<ReturnedValue, State> bState;
-using Ptr2Operator = bState(*)(State, Parameters);
+typedef std::pair<ReturnedValue, SimpleHTN::State> bState;
+using Ptr2Operator = bState(*)(SimpleHTN::State, Parameters);
 typedef std::map<OperatorId, Ptr2Operator> Operators;
+
 Operators operators;
+
 void declare_operators(OperatorId a_OperatorId, Ptr2Operator a_Ptr2Operator)
 {
 	operators[a_OperatorId] = a_Ptr2Operator;
@@ -161,11 +167,11 @@ float taxi_rate(float dist)
 	return (1.5f + 0.5f * dist);
 }
 
-bState walk(State state, Parameters p)
+bState walk(SimpleHTN::State state, Parameters p)
 {
 	if (state.loc[p.a] == p.x)
 	{
-		State result = state;
+		SimpleHTN::State result = state;
 		result.loc[p.a] = p.y;
 		return { ReturnedValue::True, result };
 	}
@@ -173,14 +179,14 @@ bState walk(State state, Parameters p)
 		return { ReturnedValue::False, empty };
 }
 
-bState call_taxi(State state, Parameters p)
+bState call_taxi(SimpleHTN::State state, Parameters p)
 {
-	State result = state;
+	SimpleHTN::State result = state;
 	result.loc[Agent::taxi] = p.x;
 	return { ReturnedValue::True, result };
 }
 
-bState ride_taxi(State state, Parameters p)
+bState ride_taxi(SimpleHTN::State state, Parameters p)
 {
 	if (state.loc[Agent::taxi] == p.x && state.loc[p.a] == p.x)
 	{
